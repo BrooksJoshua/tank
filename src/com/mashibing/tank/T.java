@@ -1,6 +1,5 @@
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+package com.mashibing.tank;
+
 import java.util.concurrent.TimeUnit;
 
 public class T {

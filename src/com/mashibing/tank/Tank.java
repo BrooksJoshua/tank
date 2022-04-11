@@ -1,3 +1,5 @@
+package com.mashibing.tank;
+
 import java.awt.*;
 
 public class Tank {
@@ -14,12 +16,12 @@ public class Tank {
     /**
      * 坦克方向
      */
-    private TankDirections direction ;
+    private Direction direction ;
     /**
      * 每次移动的步长
      */
-    private static final int SPEED = 10;
-    public Tank (int x, int y, TankDirections direction){
+    private static final int SPEED = 5;
+    public Tank (int x, int y, Direction direction){
         super();
         this.x = x;
         this.y = y;
@@ -31,7 +33,7 @@ public class Tank {
      * @param g
      */
     public void paint(Graphics g) {
-        g.setColor(Color.RED);
+        g.setColor(Color.BLACK);
         g.fillRect(x,y,50,50);
         move(g);
     }
@@ -62,11 +64,11 @@ public class Tank {
         System.out.println("\n");
     }
 
-    public TankDirections getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(TankDirections direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
     public boolean getMoving() {
