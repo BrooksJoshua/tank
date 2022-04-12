@@ -1,20 +1,25 @@
 package com.mashibing.tank;
 
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * @author leewilliam
  */
 public class TankFrame extends Frame {
-    Tank myTank = new Tank(200,200, Direction.RIGHT);
+    Tank myTank = new Tank(200,200, Direction.RIGHT, this);
+    java.util.List<Bullet> bullets = new ArrayList<Bullet>();
     Bullet  myBullet  = new Bullet(300,300,Direction.DOWN);
+    static final int GAME_WIDTH =800, GAME_HEIGHT = 600 ;
     int x=200, y =200;
     private static final int SPEED = 10;
     Direction direction = Direction.DOWN;
     public TankFrame() {
+        setBackground(Color.BLACK);
         setVisible(true);
-        setSize(1000,800);
+        setSize(GAME_WIDTH,GAME_HEIGHT);
         setResizable(true);
         setTitle( "坦克大战");
         addKeyListener(new MyKeyAdapter());
@@ -24,6 +29,23 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
+    }
+    Image offScreenImage = null;
+    /**
+     * 处理双缓冲， 原封不动copy到这里即可
+     */
+    @Override
+    public void update(Graphics g){
+        if(offScreenImage == null){
+            offScreenImage = this.createImage(GAME_WIDTH,GAME_HEIGHT);
+        }
+        Graphics gOffScreen= offScreenImage.getGraphics();
+        Color color = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        gOffScreen.setColor(color);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage,0,0,null);
     }
 
     @Override
@@ -81,6 +103,9 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN:
                     DW = false;
+                    break;
+                case KeyEvent.VK_SPACE:
+                    myTank.fire();
                     break;
                 default:
                     break;

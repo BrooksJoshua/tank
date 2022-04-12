@@ -3,7 +3,7 @@ package com.mashibing.tank;
 import java.awt.*;
 
 public class Bullet {
-    private static final int SPEED = 5 ;
+    private static final int SPEED = 3 ;
     private static final int WIDTH = 15, HEIGHT = 15;
     /**
      * （x,y）为子弹的初始位置

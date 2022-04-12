@@ -3,6 +3,7 @@ package com.mashibing.tank;
 import java.awt.*;
 
 public class Tank {
+    private TankFrame tf;
     /**
      *  moving 初始状态微静止
      */
@@ -21,11 +22,12 @@ public class Tank {
      * 每次移动的步长
      */
     private static final int SPEED = 5;
-    public Tank (int x, int y, Direction direction){
+    public Tank (int x, int y, Direction direction,TankFrame tf){
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
+        this.tf = tf;
     }
 
     /**
@@ -33,16 +35,17 @@ public class Tank {
      * @param g
      */
     public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
+        Color color = g.getColor();
+        g.setColor(Color.YELLOW);
         g.fillRect(x,y,50,50);
-        move(g);
+        g.setColor(color);
+        move();
     }
 
     /**
      * 只有为非静止状态才开始移动
-     * @param g
      */
-    private void move(Graphics g) {
+    private void move() {
         if(!moving) return ;
         switch (direction){
             case UP:
@@ -77,5 +80,9 @@ public class Tank {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    public void fire(){
+        tf.myBullet = new Bullet(this.x, this.y, this.direction);
     }
 }
