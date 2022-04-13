@@ -3,7 +3,7 @@ package com.mashibing.tank;
 import java.awt.*;
 
 public class Explode {
-    private static final int WIDTH = ResourceMgr.explosions[0].getWidth(), HEIGHT =  ResourceMgr.explosions[0].getHeight();
+    public static final int WIDTH = ResourceMgr.explosions[0].getWidth(), HEIGHT =  ResourceMgr.explosions[0].getHeight();
     private int x , y;
     private boolean living = true;
     private TankFrame tf = null;

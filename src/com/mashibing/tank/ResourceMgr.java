@@ -1,5 +1,6 @@
 package com.mashibing.tank;
 
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,7 +8,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class ResourceMgr {
-    public static BufferedImage tankL, tankR, tankU, tankD;
+    public static BufferedImage goodTankL, goodTankR, goodTankU, goodTankD;
+    public static BufferedImage badTankL, badTankR, badTankU, badTankD;
     public static BufferedImage bulletL, bulletR, bulletU, bulletD;
     public static BufferedImage[] explosions = new BufferedImage[16];
     /**
@@ -25,12 +27,19 @@ public class ResourceMgr {
     static {
         try {
             /**
-             * 坦克Image
+             * 我方坦克Image
              */
-            tankU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/BadTank1.png")));
-            tankL = ImageUtil.rotateImage(tankU,-90);
-            tankR = ImageUtil.rotateImage(tankU,90);
-            tankD = ImageUtil.rotateImage(tankU,180);
+            goodTankU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/goodTank1.png")));
+            goodTankL = ImageUtil.rotateImage(goodTankU,-90);
+            goodTankR = ImageUtil.rotateImage(goodTankU,90);
+            goodTankD = ImageUtil.rotateImage(goodTankU,180);
+            /**
+             * 敌方坦克Image
+             */
+            badTankU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/BadTank1.png")));
+            badTankL = ImageUtil.rotateImage(badTankU,-90);
+            badTankR = ImageUtil.rotateImage(badTankU,90);
+            badTankD = ImageUtil.rotateImage(badTankU,180);
             /**
              * 子弹Image
              */
