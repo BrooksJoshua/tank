@@ -1,10 +1,16 @@
 package com.mashibing.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Tank {
     public static final int WIDTH = ResourceMgr.tankD.getWidth(), HEIGHT = ResourceMgr.tankD.getHeight();
+    private Random rand = new Random();
     private TankFrame tf;
+    /**
+     * 坦克分组, 默认是敌方
+     */
+    private Group group = Group.BAD;
     /**
      * moving 初始状态微静止
      */
@@ -22,15 +28,16 @@ public class Tank {
     /**
      * 每次移动的步长
      */
-    private static final int SPEED = 5;
+    private static final int SPEED = 3;
     private boolean alive = true ;
 
-    public Tank(int x, int y, Direction direction, TankFrame tf) {
+    public Tank(int x, int y, Direction direction,Group group, TankFrame tf) {
         super();
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.tf = tf;
+        this.group = group;
     }
 
     /**
@@ -40,7 +47,7 @@ public class Tank {
      */
     public void paint(Graphics g) {
         if(!alive){
-            tf.tanks.remove(this); //移除非存活敌方坦克
+            tf.tanks.remove(this);
             return;
         }
         switch (this.direction) {
@@ -84,6 +91,7 @@ public class Tank {
             default:
                 break;
         }
+        if(rand.nextInt(10)>8) this.fire();
     }
 
     public Direction getDirection() {
@@ -105,10 +113,18 @@ public class Tank {
     public void fire() {
         int bx = this.x + Tank.WIDTH / 2 - Bullet.WIDTH / 2;
         int by = this.y + Tank.HEIGHT / 2 - Bullet.HEIGHT / 2;
-        tf.bullets.add(new Bullet(bx, by, this.direction, this.tf));
+        tf.bullets.add(new Bullet(bx, by, this.direction,this.group , this.tf));
     }
 
     public void die() {
         this.alive = false;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

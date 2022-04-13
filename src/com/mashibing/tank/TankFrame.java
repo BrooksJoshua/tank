@@ -9,10 +9,9 @@ import java.util.ArrayList;
  * @author leewilliam
  */
 public class TankFrame extends Frame {
-    Tank myTank = new Tank(100, 250, Direction.UP, this);
+    Tank myTank = new Tank(100, 250, Direction.UP,Group.GOOD, this);
     public java.util.List<Tank> tanks = new ArrayList<Tank>();
     java.util.List<Bullet> bullets = new ArrayList<Bullet>();
-    //Bullet myBullet = new Bullet(300, 300, Direction.DOWN, this);
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     int x = 200, y = 200;
     private static final int SPEED = 10;
