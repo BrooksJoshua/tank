@@ -9,19 +9,21 @@ import java.util.ArrayList;
  * @author leewilliam
  */
 public class TankFrame extends Frame {
-    Tank myTank = new Tank(200,200, Direction.RIGHT, this);
+    Tank myTank = new Tank(100, 250, Direction.UP, this);
+    public java.util.List<Tank> tanks = new ArrayList<Tank>();
     java.util.List<Bullet> bullets = new ArrayList<Bullet>();
-    Bullet  myBullet  = new Bullet(300,300,Direction.DOWN);
-    static final int GAME_WIDTH =800, GAME_HEIGHT = 600 ;
-    int x=200, y =200;
+    //Bullet myBullet = new Bullet(300, 300, Direction.DOWN, this);
+    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    int x = 200, y = 200;
     private static final int SPEED = 10;
     Direction direction = Direction.DOWN;
+
     public TankFrame() {
         setBackground(Color.BLACK);
         setVisible(true);
-        setSize(GAME_WIDTH,GAME_HEIGHT);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(true);
-        setTitle( "坦克大战");
+        setTitle("坦克大战");
         addKeyListener(new MyKeyAdapter());
         addWindowListener(new WindowAdapter() {
             @Override
@@ -30,31 +32,54 @@ public class TankFrame extends Frame {
             }
         });
     }
+
     Image offScreenImage = null;
+
     /**
      * 处理双缓冲， 原封不动copy到这里即可
      */
     @Override
-    public void update(Graphics g){
-        if(offScreenImage == null){
-            offScreenImage = this.createImage(GAME_WIDTH,GAME_HEIGHT);
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
         }
-        Graphics gOffScreen= offScreenImage.getGraphics();
+        Graphics gOffScreen = offScreenImage.getGraphics();
         Color color = gOffScreen.getColor();
         gOffScreen.setColor(Color.BLACK);
-        gOffScreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         gOffScreen.setColor(color);
         paint(gOffScreen);
-        g.drawImage(offScreenImage,0,0,null);
+        g.drawImage(offScreenImage, 0, 0, null);
     }
 
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(Color.GREEN);
+        g.drawString("子弹数量:" + bullets.size(), 20, 60);
+        g.setColor(Color.RED);
+        g.drawString("敌方数量:" + tanks.size(), 100, 60);
+        g.setColor(Color.cyan);
+        g.drawString("我方位置:(" + myTank.x + ", " + myTank.y + ")", 180, 60);
+        g.setColor(color);
         myTank.paint(g);
-        myBullet.paint(g);
-        System.out.println("当前位置: ("+x+", "+y+")");
+        //用简易foreach会报错，Exception in thread "AWT-EventQueue-0" java.util.ConcurrentModificationException
+        for (int i = 0; i < bullets.size(); i++) {
+            this.bullets.get(i).paint(g);
+        }
+
+        for (int i = 0; i < tanks.size(); i++) {
+            tanks.get(i).paint(g);
+        }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < tanks.size(); j++) {
+                bullets.get(i).collidesWith(tanks.get(j));
+            }
+        }
 
     }
+
     class MyKeyAdapter extends KeyAdapter {
 
         boolean UP = false;
@@ -68,7 +93,7 @@ public class TankFrame extends Frame {
             int keyCode = e.getKeyCode();
             switch (keyCode) {
                 case KeyEvent.VK_LEFT:
-                   LT = true;
+                    LT = true;
                     break;
                 case KeyEvent.VK_RIGHT:
                     RT = true;
@@ -77,15 +102,13 @@ public class TankFrame extends Frame {
                     UP = true;
                     break;
                 case KeyEvent.VK_DOWN:
-                     DW = true;
+                    DW = true;
                     break;
                 default:
                     break;
             }
 
             setMainTankDirection();
-            System.out.println("key pressed: "+e.getKeyCode());
-           // repaint();
         }
 
         @Override
@@ -112,14 +135,15 @@ public class TankFrame extends Frame {
             }
             setMainTankDirection();
         }
-        void setMainTankDirection(){
-            if(!UP && !DW && !LT && !RT) myTank.setMoving(false);
+
+        void setMainTankDirection() {
+            if (!UP && !DW && !LT && !RT) myTank.setMoving(false);
             else {
                 myTank.setMoving(true);
-                if(UP) myTank.setDirection(Direction.UP);
-                if(DW) myTank.setDirection(Direction.DOWN);
-                if(LT) myTank.setDirection(Direction.LEFT);
-                if(RT) myTank.setDirection(Direction.RIGHT);
+                if (UP) myTank.setDirection(Direction.UP);
+                if (DW) myTank.setDirection(Direction.DOWN);
+                if (LT) myTank.setDirection(Direction.LEFT);
+                if (RT) myTank.setDirection(Direction.RIGHT);
             }
 
         }
