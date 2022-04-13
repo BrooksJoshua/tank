@@ -14,7 +14,7 @@ public class Tank {
     /**
      * moving 初始状态微静止
      */
-    private boolean moving = false;
+    private boolean moving = true;
 
 
     /**
@@ -91,7 +91,19 @@ public class Tank {
             default:
                 break;
         }
-        if(rand.nextInt(10)>8) this.fire();
+        /**
+         * 只有敌方的子弹才是随机发的。
+         */
+        if(this.group == Group.BAD && rand.nextInt(100)>95) this.fire();
+        /**
+         * 敌方坦克随机改变方向
+         */
+        if(this.group == Group.BAD&& rand.nextInt(100)>90)
+            randChangeDir();
+    }
+
+    private void randChangeDir() {
+        this.direction = Direction.values()[rand.nextInt(4)];
     }
 
     public Direction getDirection() {

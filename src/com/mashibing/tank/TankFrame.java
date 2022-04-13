@@ -9,18 +9,51 @@ import java.util.ArrayList;
  * @author leewilliam
  */
 public class TankFrame extends Frame {
-    Tank myTank = new Tank(100, 250, Direction.UP,Group.GOOD, this);
+    /**
+     * 我方主战坦克
+     */
+    Tank myTank = new Tank(ResourceMgr.GAME_WIDTH/2, ResourceMgr.GAME_HEIGHT/2, Direction.UP,Group.GOOD, this);
+    /**
+     * 敌方坦克
+     */
     public java.util.List<Tank> tanks = new ArrayList<Tank>();
+    /**
+     * 子弹
+     */
     java.util.List<Bullet> bullets = new ArrayList<Bullet>();
+    /**
+     * 爆炸
+     */
+    public java.util.List<Explode> explodes = new ArrayList<Explode>();
+
+    /**
+     * 画布宽高
+     */
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    /**
+     * 初始位置
+     */
     int x = 200, y = 200;
+    /**
+     * 移动步长
+     */
     private static final int SPEED = 10;
+    /**
+     * 默认方向为 下 DOWN
+     */
     Direction direction = Direction.DOWN;
 
+    /**
+     * 无参构造 默认初始化
+     */
     public TankFrame() {
         setBackground(Color.BLACK);
         setVisible(true);
-        setSize(GAME_WIDTH, GAME_HEIGHT);
+        System.out.println();
+        /**
+         * 赋予游戏界面大小为显示器大小。
+         */
+        setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
         setResizable(true);
         setTitle("坦克大战");
         addKeyListener(new MyKeyAdapter());
@@ -51,6 +84,10 @@ public class TankFrame extends Frame {
         g.drawImage(offScreenImage, 0, 0, null);
     }
 
+    /**
+     * 画出所有参与方： 坦克， 子弹， 爆炸等
+     * @param g
+     */
     @Override
     public void paint(Graphics g) {
         Color color = g.getColor();
@@ -58,8 +95,11 @@ public class TankFrame extends Frame {
         g.drawString("子弹数量:" + bullets.size(), 20, 60);
         g.setColor(Color.RED);
         g.drawString("敌方数量:" + tanks.size(), 100, 60);
+        g.drawString("爆炸的数量:" + explodes.size() , 180, 60);
         g.setColor(Color.cyan);
-        g.drawString("我方位置:(" + myTank.x + ", " + myTank.y + ")", 180, 60);
+        g.drawString("我方位置:(" + myTank.x + ", " + myTank.y + ")", 300, 60);
+
+        g.drawString("游戏界面尺寸:(" + ResourceMgr.GAME_WIDTH + ", " + ResourceMgr.GAME_HEIGHT + ")", 450, 60);
         g.setColor(color);
         myTank.paint(g);
         //用简易foreach会报错，Exception in thread "AWT-EventQueue-0" java.util.ConcurrentModificationException
@@ -67,15 +107,25 @@ public class TankFrame extends Frame {
             this.bullets.get(i).paint(g);
         }
 
+        for (int i = 0; i < explodes.size(); i++) {
+            this.explodes.get(i).paint(g);
+        }
+
         for (int i = 0; i < tanks.size(); i++) {
             tanks.get(i).paint(g);
         }
 
+        /**
+         * 碰撞检测
+         */
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < tanks.size(); j++) {
                 bullets.get(i).collidesWith(tanks.get(j));
             }
         }
+
+
+
 
     }
 

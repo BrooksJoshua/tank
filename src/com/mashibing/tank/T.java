@@ -22,7 +22,7 @@ public class T {
 
     private static void initEnemy(TankFrame tankFrame, int enemySize) {
         for (int i = 0; i < enemySize; i++) {
-            tankFrame.tanks.add(new Tank(100+50*i,200, Direction.DOWN,Group.BAD, tankFrame));
+            tankFrame.tanks.add(new Tank(ResourceMgr.GAME_WIDTH*i/enemySize,ResourceMgr.GAME_HEIGHT/5, Direction.DOWN,Group.BAD, tankFrame));
         }
     }
 }

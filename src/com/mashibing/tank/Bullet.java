@@ -91,6 +91,7 @@ public class Bullet {
         if (intersects) {
             tank.die();
             this.die();
+            tf.explodes.add(new Explode(this.x,this.y,tf));
         }
         /*
         if (tf.tanks.size() == 0) {
